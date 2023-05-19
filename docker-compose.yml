@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  database:
+    container_name: 'postgres-webapp'
+    image: postgres
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - network1
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+      
+  server:
+    container_name: 'webapp-server'
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    depends_on:
+      - database
+      - rabbitmq
+    networks:
+      - network1
+    ports:
+    - "90:80"
+    
+  rabbitmq:
+    image: rabbitmq:3.8.25-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - network1
+networks:
+    network1:
+        driver: bridge
+volumes:
+  data:
