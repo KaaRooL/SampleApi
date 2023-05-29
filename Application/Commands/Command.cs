@@ -1,5 +1,4 @@
-﻿using Application.Dtos;
-using Common.Dispatcher.CommandProcessor;
+﻿using Common.Dispatcher.CommandProcessor;
 
 namespace Application.Commands
 {

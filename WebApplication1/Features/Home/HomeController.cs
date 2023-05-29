@@ -1,9 +1,8 @@
-﻿using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Application.Commands;
-using Application.Queries;
 using Common.Dispatcher;
 using Common.Dispatcher.CommandProcessor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication1.Features.Home
@@ -26,22 +25,20 @@ namespace WebApplication1.Features.Home
         [HttpGet("Dispatcher")]
         public async Task<IActionResult> Home()
         {
-            var query = new SampleQuery();
             var command = new Command();
             await _dispatcher.RunAsync(command);
             return new JsonResult("essa");
         }
 
         [HttpGet("DispatcherSync")]
+        [Authorize]
         public IActionResult Home2()
         {
             var command = new Command();
-            var commandWithReturn = new CommandWithReturn();
-            var query = new SampleQuery();
+            // var commandWithReturn = new CommandWithReturn();
             
-            var y = _dispatcher.Run(query);
-            _dispatcher.Run(command);
-            var a = _dispatcher.Run(commandWithReturn);
+             _dispatcher.Run(command);
+            // var a = _dispatcher.Run(commandWithReturn);
 
 
             return new AcceptedResult();

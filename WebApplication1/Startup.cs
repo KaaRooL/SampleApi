@@ -1,21 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Common;
-using Common.Dispatcher;
-using Common.Services;
 using Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 namespace WebApplication1
 {
@@ -33,30 +22,16 @@ namespace WebApplication1
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Common API",
-                    Description = "Common Api created by Karol Siwak",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                });
-                
-                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-            });
+           
          
             services.AddRazorPages();
-            //services.AddScoped()
-            //services.AddTransient()
-            //services.AddSingleton()
-            
+
             services.RegisterQueryHandlers();
             services.RegisterCommandHandlers();
             services.RegisterDispatcher();
             
             services.AddSingleServices();
+            services.AddSwagger();            
 
             services.AddApplication(Configuration);
 
@@ -83,6 +58,7 @@ namespace WebApplication1
             app.UseStaticFiles();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
