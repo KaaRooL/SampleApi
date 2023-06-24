@@ -22,7 +22,7 @@ public static class Extensions
         });
 
         
-        AddFirebase(services);
+        AddFirebase(services, configuration);
 
         services.AddScoped<ISampleRepository, SampleRepository>();
         
@@ -32,11 +32,12 @@ public static class Extensions
         
     }
 
-    private static void AddFirebase(IServiceCollection services)
+    private static void AddFirebase(IServiceCollection services, IConfiguration configuration)
     {
+        var filePath = configuration.GetSection("Firebase:KeyPath");
         var firebase = FirebaseApp.Create(new AppOptions()
         {
-            Credential = GoogleCredential.FromFile("C:/Firebase/commonproject-b0f95-firebase-adminsdk-16ti3-fdab7e9f8c.json"),
+            Credential = GoogleCredential.FromFile(filePath.Value),
         });
 
         
