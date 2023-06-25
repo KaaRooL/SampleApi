@@ -10,11 +10,11 @@ namespace WebApplication1
         public static Task Main(string[] args) => CreateHostBuilder(args).Build().RunAsync();
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(options=>options.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true))
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                    
-                });
+                Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(options =>
+                    {
+                        options.AddEnvironmentVariables();
+                        options.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    })
+                    .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
