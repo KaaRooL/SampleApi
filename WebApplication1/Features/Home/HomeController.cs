@@ -9,6 +9,7 @@ using Common.Dispatcher.CommandProcessor;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace WebApplication1.Features.Home
 {
@@ -20,11 +21,11 @@ namespace WebApplication1.Features.Home
     public class HomeController : ControllerBase
     {
         private readonly IDispatcher _dispatcher;
-        private readonly ICommandProcessor _commandProcessor;
-        public HomeController(IDispatcher dispatcher, ICommandProcessor commandProcessor)
+        private string _test;
+        public HomeController(IDispatcher dispatcher, IConfiguration config)
         {
             _dispatcher = dispatcher;
-            _commandProcessor = commandProcessor;
+            _test = config["testKey"];
         }
 
         [HttpGet("UserInfo")]
@@ -41,21 +42,12 @@ namespace WebApplication1.Features.Home
             return new JsonResult(userInfo);
         }
 
-        [HttpGet("DispatcherSync")]
-        [Authorize]
+        [HttpGet("GetVaueFromEnv")]
         public IActionResult Home2()
         {
-            var command = new Command();
-            // var commandWithReturn = new CommandWithReturn();
-            
-             _dispatcher.Run(command);
-            // var a = _dispatcher.Run(commandWithReturn);
-
-
-            return new AcceptedResult();
+            return new JsonResult(_test);
         }
 
-        
     }
 }
 public record UserInfo(string Id, string Email, bool EmailVerified, string Username);
