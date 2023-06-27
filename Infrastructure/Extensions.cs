@@ -18,7 +18,9 @@ public static class Extensions
     {
         services.AddDbContext<DataContext>(o =>
         {
-            o.UseNpgsql(configuration.GetConnectionString("WebApiDatabase"));
+            var csMEthod = configuration.GetConnectionString("SampleApiDatabase");
+            var cspare = configuration["ConnectionStrings:SampleApiDatabase"];
+            o.UseNpgsql(configuration.GetConnectionString("SampleApiDatabase"));
         });
 
         

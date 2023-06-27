@@ -12,8 +12,8 @@ namespace WebApplication1
         public static IHostBuilder CreateHostBuilder(string[] args) =>
                 Host.CreateDefaultBuilder(args).ConfigureAppConfiguration(options =>
                     {
-                        options.AddEnvironmentVariables();
-                        options.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                        // options.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                        options.AddEnvironmentVariables(prefix: "SampleApi__");
                     })
                     .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }

@@ -6,7 +6,8 @@ namespace Infrastructure.Repositories;
 
 public class SampleRepository : ISampleRepository
 {
-    private readonly DataContext _context;
+    private readonly DataContext 
+            _context;
     private readonly ILogger<SampleRepository> _logger;
     public SampleRepository(DataContext context, ILogger<SampleRepository> logger)
     {
